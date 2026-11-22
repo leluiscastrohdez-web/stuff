@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#f7f7f5;background:#111b1b}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(138deg,#142524,#0e1415 72%)}
+main{max-width:1100px;margin:auto;padding:32px 22px 70px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-size:25px;font-weight:850;letter-spacing:.05em}.brand span{color:#b6e26d}.hint{color:#a9b9b8;font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+h1{font-size:clamp(30px,5vw,58px);line-height:1.06;max-width:840px;margin:45px 0 14px;letter-spacing:-.04em}.subtitle{font-size:17px;color:#b5c0be;max-width:780px;line-height:1.5;margin-bottom:30px}
+.panel{background:#1e2a29;border:1px solid #3b504b;border-radius:18px;padding:22px;box-shadow:0 9px 45px #0003}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.controls{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;align-items:end}
+label{display:block;color:#b6c6c1;font-size:12px;font-weight:650;margin-bottom:7px}select,input{border-radius:9px;border:1px solid #49605c;background:#101b1b;color:#fff;padding:12px;width:100%;font-size:14px;min-height:44px}
+button{background:#b9e771;border:none;color:#162022;font-weight:800;border-radius:10px;padding:13px 20px;cursor:pointer;min-height:44px}
+button:disabled{opacity:.5;cursor:wait}.ghost{background:#293d39;color:#d4e9db;border:1px solid #536b5f}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.small{font-size:12px;color:#afbfba;line-height:1.6}.pill{font-size:11px;border-radius:30px;padding:6px 10px;border:1px solid #697f6e;color:#d3e6be}
+h2{font-size:20px;letter-spacing:-.02em}h3{font-size:16px}p{line-height:1.55}.variant{padding:16px;background:#132221;border:1px solid #405953;border-radius:12px}.variant strong{font-size:12px;color:#c4e49e}
+.metric{font-size:34px;font-weight:850;letter-spacing:-.04em;margin:8px 0}.meter{height:10px;background:#344842;border-radius:100px;overflow:hidden}.fill{background:#b9e771;height:100%;width:0%}.output{margin-top:22px;display:none}.results{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+blockquote{margin:0;font-size:14px;color:#e7eee8}.agent{padding:13px 0;border-top:1px solid #31453f}.agent:first-child{border-top:0}.agenthead{display:flex;justify-content:space-between;gap:10px}.name{font-weight:750}.answer{color:#d4dddb;font-size:13px;margin:6px 0}.foot{padding-top:25px;color:#9eadaa;font-size:12px}
+.status{min-height:25px;color:#cce6a4;font-size:13px;margin-top:12px}.error{color:#ffbfb1}small{color:#9ab5ad}@media(max-width:850px){.controls{grid-template-columns:1fr 1fr}.grid,.results{grid-template-columns:1fr}}@media(max-width:520px){.controls{grid-template-columns:1fr}main{padding:18px 14px 45px}.panel{padding:16px}header{align-items:flex-start}}
+</style></head><body>
+<main>
+<header><div class="brand">CRITERIA<span>·</span>LAB</div><div class="hint">Decisiones para avanzar · Versión 0.2</div></header>
+<h1>Explorar decisiones antes de comprometer recursos.</h1>
+<p class="subtitle">Laboratorio multiagente para revisar mensajes, servicios y objeciones de CRITERIA. Los resultados representan comportamientos ficticios, <strong>no preferencias medidas en el mercado</strong>.</p>
+<div class="panel">
+ <h2>Configurar experimento</h2>
+ <div class="controls">
+  <div><label for="scenario">Experimento</label><select id="scenario"><option value="mensaje">Propuesta de valor de CRITERIA</option><option value="s00">Exploración Empresarial S00</option><option value="taller">Taller de IA S03</option><option value="metodo">Método y profundidad de intervención</option></select></div>
+  <div><label for="mode">Motor</label><select id="mode"><option value="demo">Reglas (siempre gratis)</option><option value="gemini">Gemini (cuota gratuita)</option></select></div>
+  <div><label for="agents">Agentes</label><select id="agents"><option>4</option><option selected>8</option><option>12</option></select></div>
+  <div><label for="rounds">Rondas</label><select id="rounds"><option>1</option><option selected>2</option><option>3</option></select></div>
+ </div>
+ <div class="row"><div style="flex:1;min-width:160px"><label for="seed">Semilla reproducible</label><input id="seed" value="20261121"/></div><button id="run">Ejecutar simulación</button><button class="ghost" id="export" disabled>Exportar CSV</button></div>
+ <p id="status" class="status" role="status"></p>
+ <div class="row"><span class="pill">Sin datos confidenciales</span><span class="pill">Comparación A/B</span><span class="pill">Memoria por rondas</span><span class="pill">Resultados sintéticos</span></div>
+</div>
+<section class="output" id="output">
+ <h2>Resultados del experimento</h2><p class="small" id="runInfo"></p>
+ <div class="results" id="variants"></div>
+ <div class="panel" style="margin-top:18px"><h2>Objeciones y razonamientos</h2><div id="agentsOut"></div></div>
+ <p class="foot">Importante: un puntaje mayor NO es una probabilidad de compra. En modo reglas depende de supuestos programados; en modo Gemini, de respuestas generadas por IA. Valida las hipótesis con personas reales antes de modificar precios o estrategias.</p>
+</section>
+<footer class="foot">CRITERIA — Soluciones Empresariales · Laboratorio experimental privado. No enviar expedientes, información personal ni datos comerciales sensibles a la API gratuita.</footer>
+</main>
+<script>
+const SCENARIOS={
+ mensaje:{title:'Propuesta de valor',type:'marca',a:'Dale rumbo a tu negocio.',b:'Antes de cambiar tu empresa, descubre qué vale la pena cambiar.'},
+ s00:{title:'Exploración S00',type:'servicio',a:'Conversación comercial inicial sin costo de 15–20 minutos; no constituye diagnóstico.',b:'Exploración S00: escenario de precio de $2,250 MXN para microempresa, antes de IVA, con alcance limitado y una ficha de hallazgos.'},
+ taller:{title:'Taller empresarial de IA',type:'capacitacion',a:'Charla general de herramientas de IA.',b:'Taller de IA: seguridad, buenas prácticas, procesos y ejercicios aplicados. Hipótesis de $16,000 MXN por grupo.'},
+ metodo:{title:'Alcance adecuado',type:'metodologia',a:'Recomendar diagnóstico integral a cualquier empresa con problemas.',b:'Seleccionar intervención mínima profesionalmente suficiente y derivar los riesgos fuera de competencia.'}
+};
+const AGENTS=[
+ ['M01','Comercio','Micro','Propietaria cautelosa','Costo y caja',.9,.65],['M02','Servicios','Micro','Emprendedor digital','Rapidez y autonomía',.48,.83],['M03','Manufactura','Pequeña','Directora de operaciones','Resultados medibles',.68,.59],['M04','Restaurante','Micro','Dueño escéptico','Ventas inmediatas',.85,.32],['M05','Comercio','Pequeña','Gerente comercial','Diferenciación y crecimiento',.45,.7],['M06','Servicios profesionales','Pequeña','Directora administrativa','Privacidad y cumplimiento',.72,.35],['M07','Tecnología','Micro','Fundador tecnológico','Autogestión y herramientas',.4,.95],['M08','Logística','Pequeña','Jefe de operaciones','Aplicación práctica',.64,.55],['M09','Salud no clínica','Micro','Administradora','Confianza y límites',.75,.46],['M10','Comercio','Micro','Empresa familiar','Tiempo y claridad',.8,.5],['M11','Manufactura','Pequeña','Directora general','Evidencia y delegación',.6,.57],['M12','Servicios','Micro','Consultor independiente','Valor incremental',.7,.81]
+];
+const $=s=>document.getElementById(s); let current=null;
+function safe(t){return String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function demoRun(opts){
+ const sc=SCENARIOS[opts.scenario],sample=AGENTS.slice(0,opts.agents);
+ function rf(k){let h=2166136261,s=opts.seed+'|'+k;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return ((h>>>0)%10000)/10000;}
+ const variants=['a','b'].map((variant,vi)=>{
+  const memory={};const responses=[];
+  for(let round=1;round<=opts.rounds;round++)sample.forEach(a=>{
+   const v=rf(a[0]+'|'+variant+'|'+round),prior=memory[a[0]]||0;
+   let base=2.35+(variant==='b'?.55:0)+(a[6]-.5)*.4-a[5]*(['servicio','capacitacion'].includes(sc.type)?.55:0)+(round>1?(prior-3)*.13:0)+(v-.5)*1.3;
+   if(sc.type==='metodologia'&&variant==='a')base-=.8;
+   const score=Math.min(5,Math.max(1,Math.round(base)));memory[a[0]]=score;
+   const decision=score>=4?'Consideraría conversar':score<=2?'No avanzaría':'Necesito aclaraciones';
+   responses.push({round,variant,agentId:a[0],sector:a[1],size:a[2],role:a[3],score,decision,
+    reason:score>=4?'Suena pertinente para '+a[4].toLowerCase()+', pero necesito conocer el alcance.':'No demuestra aún cómo atendería '+a[4].toLowerCase()+'.',
+    question:'¿Qué recibiría en concreto y bajo qué condiciones?',basis:'Reglas sintéticas; no IA'});
+  });
+  return {key:variant,label:'Alternativa '+variant.toUpperCase(),message:sc[variant],responses};
+ });
+ return {runId:'LOCAL-'+Date.now(),scenarioId:opts.scenario,scenarioTitle:sc.title,variants,mode:'demo',engine:'reglas transparentes (offline)',agentCount:sample.length,rounds:opts.rounds,seed:opts.seed,saved:false,createdAt:new Date().toISOString()};
+}
+function params(){return {scenario:$('scenario').value,mode:$('mode').value,agents:Number($('agents').value),rounds:Number($('rounds').value),seed:$('seed').value||'20261121'};}
+function showStatus(s,err){$('status').textContent=s;$('status').className='status'+(err?' error':'');}
+function finish(d){current=d;$('run').disabled=false;$('export').disabled=false;$('output').style.display='block';
+ $('runInfo').textContent=(d.mode==='gemini'?'Gemini — respuestas generativas':'Demostración — reglas predefinidas')+' · '+d.agentCount+' agentes · '+d.rounds+' rondas · Semilla '+d.seed+' · '+(d.saved?'Guardado en Google Sheets':'No guardado en Drive');
+ $('variants').innerHTML=d.variants.map(v=>{
+  const latest=v.responses.filter(r=>r.round===d.rounds),mean=latest.reduce((s,r)=>s+r.score,0)/latest.length;
+  const interested=latest.filter(r=>r.decision==='Consideraría conversar').length;
+  return `<div class="panel"><div class="variant"><strong>${safe(v.label)}</strong><p>${safe(v.message)}</p></div><div class="metric">${mean.toFixed(2)} <small>/ 5</small></div><div class="meter"><div class="fill" style="width:${mean/5*100}%"></div></div><p class="small">Puntaje medio artificial · ${interested}/${latest.length} agentes dirían que considerarían conversar</p></div>`;}).join('');
+ $('agentsOut').innerHTML=d.variants.map(v=>`<h3>${safe(v.label)}</h3>`+v.responses.filter(r=>r.round===d.rounds).map(r=>`<div class="agent"><div class="agenthead"><span class="name">${safe(r.agentId)} · ${safe(r.role)}</span><span class="pill">${safe(r.score)} / 5</span></div><p class="answer">${safe(r.decision)} · ${safe(r.reason)}</p><p class="small">${safe(r.question)}</p></div>`).join('')).join('');
+ showStatus(d.saved?'Simulación guardada en la hoja de CRITERIA.':'Simulación terminada. Modo demostración local; no se guardó en Drive.');
+ $('output').scrollIntoView({behavior:'smooth'});
+}
+$('run').addEventListener('click',()=>{
+ const p=params();$('run').disabled=true;$('export').disabled=true;showStatus('Simulando agentes…');
+ if(typeof google!=='undefined' && google.script&&google.script.run){
+  google.script.run.withSuccessHandler(finish).withFailureHandler(e=>{$('run').disabled=false;showStatus('No se completó: '+(e.message||e),true);}).runSimulation(p);
+ }else if(p.mode==='gemini'){$('run').disabled=false;showStatus('Gemini requiere desplegar la aplicación privada en Google Apps Script. Usa modo Reglas para la demo.',true);}
+ else{setTimeout(()=>finish(demoRun(p)),40);}
+});
+$('export').addEventListener('click',()=>{if(!current)return;
+ const rows=[['corrida','escenario','motor','variante','ronda','agente','sector','tamaño','rol','puntaje','decisión','razón','pregunta']];
+ current.variants.forEach(v=>v.responses.forEach(r=>rows.push([current.runId,current.scenarioId,current.mode,v.key,r.round,r.agentId,r.sector,r.size,r.role,r.score,r.decision,r.reason,r.question])));
+ const csv='\uFEFF'+rows.map(row=>row.map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='CRITERIA_Lab_'+current.scenarioId+'_'+current.seed+'.csv';a.click();URL.revokeObjectURL(url);
+});
+</script></body></html>
