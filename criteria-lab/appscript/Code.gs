@@ -88,7 +88,10 @@ function runGemini_(scenario,agents,rounds,seed) {
   const key=PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
   if(!key) throw new Error('Aún no está configurada GEMINI_API_KEY en Propiedades de secuencia de comandos.');
   const variants=[];
-  ['a','b'].forEach(variant=>{
+  // Alterne el orden de llamadas entre corridas para mitigar efectos del orden.
+  // La semilla no hace determinista a Gemini.
+  const order=(seed.split('').reduce((sum,ch)=>sum+ch.charCodeAt(0),0)%2===0)?['a','b']:['b','a'];
+  order.forEach(variant=>{
     const memory=[];const responses=[];
     for(let round=1;round<=rounds;round++){
       const instruction='Simulación de investigación exploratoria, NO predicción. '+
@@ -133,7 +136,8 @@ function runGemini_(scenario,agents,rounds,seed) {
     }
     variants.push({key:variant,label:variant==='a'?'Alternativa A':'Alternativa B',message:scenario[variant],responses});
   });
-  return {variants,agentCount:agents.length,rounds,engine:'Gemini '+LAB.model};
+  variants.sort((x,y)=>x.key.localeCompare(y.key));
+  return {variants,agentCount:agents.length,rounds,engine:'Gemini '+LAB.model,generationOrder:order.join('→')};
 }
 function cleanCell_(s){const v=String(s===undefined||s===null?'':s).slice(0,3000);return /^[=+@\-]/.test(v)?"'"+v:v;}
 function saveResult_(result){
@@ -147,7 +151,7 @@ function saveResult_(result){
     const means=result.variants.map(v=>{
       const last=v.responses.filter(r=>r.round===result.rounds);return Math.round(last.reduce((s,r)=>s+r.score,0)/Math.max(1,last.length)*100)/100;
     });
-    runs.appendRow([result.runId,result.createdAt,result.scenarioId,result.mode,result.seed,result.agentCount,result.rounds,means[0],means[1],result.version,'SINTÉTICO; no validación de mercado']);
+    runs.appendRow([result.runId,result.createdAt,result.scenarioId,result.mode,result.seed,result.agentCount,result.rounds,means[0],means[1],result.version,'SINTÉTICO; no validación de mercado; orden IA: '+String(result.generationOrder||'A→B')]);
     const values=[];result.variants.forEach(v=>v.responses.forEach(r=>{
       values.push([result.runId,result.createdAt,result.scenarioId,v.key,r.round,r.agentId,r.sector,r.size,r.role,r.score,cleanCell_(r.decision),cleanCell_(r.reason),cleanCell_(r.question),cleanCell_(r.basis)]);
     }));
