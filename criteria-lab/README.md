@@ -69,3 +69,21 @@ Fuentes técnicas:
 El prototipo v0.2 original configuraba `gemini-2.5-flash-lite`, pero Google restringió la generación con modelos Gemini 2.5 a proyectos con uso histórico. En la versión v0.2.1 se cambió a `gemini-3.5-flash-lite`. Si ya copiaste Code.gs a Apps Script, cambia solo el ID del modelo, guarda y **Implementar → Administrar implementaciones → Editar → Versión: Nueva versión → Implementar**. Las implementaciones previas no recogen cambios hasta seleccionar una nueva versión. La clave API existente no necesita regenerarse.
 
 Si hay error, el código nuevo muestra el mensaje técnico de Google, sin registrar la clave.
+
+
+## v0.3 | Experimento «Oferta comercial completa (A/B)» (noviembre 2026)
+
+Este experimento **no** compara únicamente eslóganes. Compara la descripción base de la oferta comercial con una versión que explicita quién recibe el servicio, entregables posibles, C01 (primera conversación de 15–20 minutos sin costo y sin diagnóstico), S00 (exploración opcional y cotizada), S01-B y S01-A, y límites profesionales. No publica tarifas internas.
+
+**Materiales de trabajo en la cuenta privada de CRITERIA:**
+- Base y pestañas `Oferta_AB`, `Validación real` y `Rúbrica real`: https://docs.google.com/spreadsheets/d/1Al_FUmjm_Iyg7zjxp6_PcZUUS-z-1OpiZTKuDO_wGRg/edit
+- Guion y protocolo de ocho entrevistas reales: https://docs.google.com/document/d/1HaqFh3IYQwTy-0C4SvvxtX3kNeqz1j_KUUghH772QXI/edit
+
+**Para actualizar una instalación existente de Apps Script**
+1. En el editor de Google Apps Script vinculado a la hoja, reemplaza el contenido de `Code.gs` con `criteria-lab/appscript/Code.gs` y el de `Index.html` con `criteria-lab/appscript/Index.html`. No toques la propiedad privada `GEMINI_API_KEY`.
+2. Guarda. Ve a `Implementar > Administrar implementaciones > lápiz (Editar) > Versión: Nueva versión > Implementar`.
+3. Actualiza la URL de la aplicación y verifica que diga `Versión 0.3`. Selecciona `Oferta comercial completa (A/B)`, motor `Reglas`, cuatro agentes, una ronda; comprueba guardado en Sheets. Luego prueba Gemini con cuatro agentes y una ronda. No habilites planes de pago.
+4. Repite simulaciones de forma acotada y **no tomes puntajes como intención real de compra**. La «semilla» no garantiza reproducción determinista de respuestas de Gemini.
+5. Antes de concluir, recoge ocho entrevistas voluntarias reales. La hoja usa E01–E08, con orden de exposición equilibrado: cuatro A→B y cuatro B→A. No incluyas identidades, teléfonos o datos comerciales sensibles.
+
+**Advertencia metodológica:** la versión B es más extensa; el experimento mezcla redacción, detalle y longitud. Además, un mismo LLM representa múltiples personajes, que no son muestras independientes.
