@@ -3,7 +3,7 @@
  * See README for deploying as a private web app (Only myself).
  */
 const LAB = {
-  version: '0.2.0', model: 'gemini-2.5-flash-lite', maxAgents: 12, maxRounds: 3,
+  version: '0.2.1', model: 'gemini-3.5-flash-lite', maxAgents: 12, maxRounds: 3,
   scenarios: {
     mensaje: {title: 'Propuesta de valor', type:'marca', a: 'Dale rumbo a tu negocio.', b: 'Antes de cambiar tu empresa, descubre qué vale la pena cambiar.'},
     s00: {title: 'Exploración Empresarial S00', type:'servicio', a: 'Una primera conversación comercial de 15–20 minutos sin costo para conocer la situación; NO es un diagnóstico.', b: 'Exploración Empresarial S00, microempresa: escenario de honorarios $2,250 MXN antes de IVA, alcance limitado 3 horas, ficha de hallazgos e incertidumbres. No obliga a contratar consultoría posterior.'},
@@ -107,7 +107,12 @@ function runGemini_(scenario,agents,rounds,seed) {
       const response=UrlFetchApp.fetch(url,{method:'post',contentType:'application/json',
         headers:{'x-goog-api-key':key},payload:JSON.stringify(payload),muteHttpExceptions:true});
       const status=response.getResponseCode();
-      if(status<200||status>=300) throw new Error('Gemini devolvió HTTP '+status+'. Comprueba modelo, cuota y API; no se guardaron resultados parciales.');
+      if(status<200||status>=300) {
+        const body=response.getContentText().slice(0,600);
+        let message='';
+        try {const details=JSON.parse(body);message=String((details.error||{}).message||'').slice(0,300);}catch(e){message='No se pudo interpretar la respuesta de error.';}
+        throw new Error('Gemini devolvió HTTP '+status+'. '+message+' No se guardaron resultados parciales.');
+      }
       const data=JSON.parse(response.getContentText());
       const raw=((data.candidates||[])[0]||{}).content;
       const answer=(raw&&raw.parts||[]).map(x=>x.text||'').join('');
