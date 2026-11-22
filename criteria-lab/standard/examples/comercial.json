@@ -1,0 +1,166 @@
+{
+  "standard_version": "1.0",
+  "case_id": "CEV-CRITERIA-COMERCIAL-01",
+  "name": "Claridad de oferta CRITERIA",
+  "domain": "comunicacion_comercial",
+  "object": {
+    "type": "propuesta_de_valor",
+    "description": "Comparación de cuatro combinaciones de mensaje genérico/específico y ejemplo de entregable ausente/presente. Todo el contenido y los datos de arranque son ficticios, salvo la redacción comercial autorizada.",
+    "maturity": "prototipo"
+  },
+  "decision": {
+    "question": "¿Qué componentes del mensaje mejoran la comprensión espontánea de la oferta de CRITERIA?",
+    "owner_role": "Dirección de CRITERIA",
+    "options": [
+      "Conservar mensaje actual",
+      "Mostrar ejemplo de entregable",
+      "Cambiar el mensaje",
+      "Combinar mensaje específico y entregable"
+    ],
+    "deadline": null,
+    "error_cost": "Una mala interpretación puede confundir consultoría con software o con servicios gratuitos."
+  },
+  "target": {
+    "unit": "persona",
+    "population": "Propietarios y decisores de micro y pequeñas empresas",
+    "context": "Lectura de una pantalla de oferta comercial sin intervención del entrevistador",
+    "geography": "Guadalajara y Mazatlán, México",
+    "time_window": "Prueba exploratoria de corto plazo",
+    "exclusions": [
+      "Personas que trabajen en CRITERIA o conozcan el diseño del estudio"
+    ]
+  },
+  "hypotheses": [
+    {
+      "id": "H01",
+      "claim": "Un mensaje específico facilitaría identificar a CRITERIA como consultoría de decisiones.",
+      "falsification": "No hay mejora en comprensión espontánea frente al mensaje genérico.",
+      "direction": "mayor"
+    },
+    {
+      "id": "H02",
+      "claim": "Mostrar un entregable de ejemplo facilitaría describir qué se recibe.",
+      "falsification": "La frecuencia de respuestas correctas sobre entregables no mejora.",
+      "direction": "mayor"
+    }
+  ],
+  "factors": [
+    {
+      "id": "F1",
+      "name": "Mensaje",
+      "levels": [
+        "Genérico",
+        "Específico"
+      ],
+      "controllable": true,
+      "unit": null,
+      "safe_range": null
+    },
+    {
+      "id": "F2",
+      "name": "Ejemplo de entregable",
+      "levels": [
+        "Ausente",
+        "Presente"
+      ],
+      "controllable": true,
+      "unit": null,
+      "safe_range": null
+    }
+  ],
+  "metrics": [
+    {
+      "id": "M01",
+      "name": "Comprensión espontánea",
+      "measurement": "Puntuación de rúbrica 0–2 sobre qué hace CRITERIA antes de explicar el servicio.",
+      "unit": "puntos 0-2",
+      "source_id": "SRC-ENTREVISTAS",
+      "direction": "subir",
+      "baseline": null,
+      "threshold": 1.5,
+      "minimum_relevant_effect": 0.5,
+      "measurement_quality": "no_evaluada"
+    },
+    {
+      "id": "M02",
+      "name": "Identificación de entregable",
+      "measurement": "Puntuación 0–2 de lo que la persona cree que recibirá, primer estímulo.",
+      "unit": "puntos 0-2",
+      "source_id": "SRC-ENTREVISTAS",
+      "direction": "subir",
+      "baseline": null,
+      "threshold": 1.5,
+      "minimum_relevant_effect": 0.5,
+      "measurement_quality": "no_evaluada"
+    }
+  ],
+  "sources": [
+    {
+      "id": "SRC-ENTREVISTAS",
+      "kind": "entrevista",
+      "origin": "Ocho empresarios reales invitados, participación voluntaria; NO realizados todavía",
+      "status": "por_obtener",
+      "quality": "no_evaluada",
+      "usage_rights": "por_confirmar",
+      "period": null,
+      "location": "Drive privado de CRITERIA",
+      "limitations": "Muestra pequeña de conveniencia; se necesita más muestra para estimar efectos con precisión.",
+      "synthetic": false
+    },
+    {
+      "id": "SRC-GEMINI",
+      "kind": "simulacion",
+      "origin": "Agentes ficticios de CRITERIA Lab",
+      "status": "disponible",
+      "quality": "baja",
+      "usage_rights": "permitido",
+      "period": "2026-11",
+      "location": "Google Sheets: Corridas/Respuestas",
+      "limitations": "No es evidencia de preferencias, compra ni conversión real.",
+      "synthetic": true
+    }
+  ],
+  "design": {
+    "goal": "explorar",
+    "method": "doe_factorial",
+    "assignment": "por_definir",
+    "replicates": 0,
+    "sample_size_planned": 8,
+    "confounders": [
+      "Experiencia empresarial",
+      "Familiaridad previa con la consultoría",
+      "Orden de presentación"
+    ],
+    "assumptions": [
+      "Las respuestas espontáneas pueden codificarse mediante rúbrica"
+    ],
+    "sampling_note": "Ocho conversaciones son preprueba cualitativa, no estudio de potencia estadística suficiente para estimar interacciones.",
+    "analysis_plan": "Describir las respuestas por tratamiento, revisar sesgo de codificación y planear tamaño muestral posterior. No reportar p-valores concluyentes en el piloto.",
+    "preregistration": null
+  },
+  "governance": {
+    "risk": "bajo",
+    "personal_data": false,
+    "authorized": false,
+    "budget_limit": 0,
+    "budget_currency": "MXN",
+    "stop_conditions": [
+      "No registrar respuestas si no hay consentimiento",
+      "No enviar información confidencial a Gemini"
+    ],
+    "human_reviewer_role": "Responsable de CRITERIA",
+    "privacy_note": "Registrar solo respuestas anónimas, no nombres ni teléfonos.",
+    "restricted_topic": false
+  },
+  "extensions": {
+    "marketing": {
+      "channel": "web",
+      "target_action": "solicitar una conversación introductoria"
+    }
+  },
+  "unknowns": [
+    "Tamaño de muestra necesario para un estudio causal",
+    "Nivel de confianza de la rúbrica",
+    "Consentimientos de participantes"
+  ]
+}
