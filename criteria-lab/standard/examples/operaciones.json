@@ -1,0 +1,149 @@
+{
+  "standard_version": "1.0",
+  "case_id": "CEV-OPS-HIPOTETICO-01",
+  "name": "Reducción de tiempos de atención — caso ficticio",
+  "domain": "operaciones",
+  "object": {
+    "type": "proceso",
+    "description": "Ejemplo sintético de una empresa que considera cambiar la plantilla de trabajo y el sistema de asignación de turnos. No pertenece a un cliente real.",
+    "maturity": "idea"
+  },
+  "decision": {
+    "question": "¿Qué combinación reduce el tiempo promedio de atención sin empeorar la tasa de errores?",
+    "owner_role": "Gerencia de operaciones",
+    "options": [
+      "Mantener operación actual",
+      "Cambiar plantilla",
+      "Cambiar asignación",
+      "Cambiar ambos"
+    ],
+    "deadline": null,
+    "error_cost": "Un cambio puede aumentar errores o deteriorar el servicio."
+  },
+  "target": {
+    "unit": "ticket",
+    "population": "Tickets de atención de un proceso hipotético",
+    "context": "Proceso de atención simulado con condiciones operativas controlables",
+    "geography": null,
+    "time_window": "Dos semanas de prueba proyectada",
+    "exclusions": [
+      "Tickets atípicos sin clasificación de complejidad"
+    ]
+  },
+  "hypotheses": [
+    {
+      "id": "H01",
+      "claim": "La nueva plantilla reduce tiempo promedio de atención.",
+      "falsification": "El tiempo medio no disminuye respecto a la plantilla actual en una prueba con medición real.",
+      "direction": "menor"
+    }
+  ],
+  "factors": [
+    {
+      "id": "F1",
+      "name": "Plantilla",
+      "levels": [
+        "Actual",
+        "Nueva"
+      ],
+      "controllable": true,
+      "unit": null,
+      "safe_range": null
+    },
+    {
+      "id": "F2",
+      "name": "Asignación",
+      "levels": [
+        "Manual",
+        "Reglas"
+      ],
+      "controllable": true,
+      "unit": null,
+      "safe_range": null
+    }
+  ],
+  "metrics": [
+    {
+      "id": "M01",
+      "name": "Tiempo",
+      "measurement": "Minutos desde entrada hasta resolución por ticket",
+      "unit": "minutos",
+      "source_id": "SRC-TIEMPOS",
+      "direction": "bajar",
+      "baseline": null,
+      "threshold": null,
+      "minimum_relevant_effect": 2,
+      "measurement_quality": "no_evaluada"
+    },
+    {
+      "id": "M02",
+      "name": "Errores",
+      "measurement": "Tickets con re-trabajo dividido por tickets totales",
+      "unit": "proporción",
+      "source_id": "SRC-TIEMPOS",
+      "direction": "mantener",
+      "baseline": null,
+      "threshold": null,
+      "minimum_relevant_effect": null,
+      "measurement_quality": "no_evaluada"
+    }
+  ],
+  "sources": [
+    {
+      "id": "SRC-TIEMPOS",
+      "kind": "medicion",
+      "origin": "Registros por capturar en ensayo futuro",
+      "status": "por_obtener",
+      "quality": "no_evaluada",
+      "usage_rights": "por_confirmar",
+      "period": null,
+      "location": null,
+      "limitations": "No se ha validado consistencia del sistema de medición.",
+      "synthetic": false
+    }
+  ],
+  "design": {
+    "goal": "estimar_efecto",
+    "method": "doe_factorial",
+    "assignment": "por_definir",
+    "replicates": 0,
+    "sample_size_planned": 0,
+    "confounders": [
+      "Complejidad del ticket",
+      "Turno",
+      "Experiencia del operador"
+    ],
+    "assumptions": [
+      "La carga de tickets es suficientemente comparable"
+    ],
+    "sampling_note": "Falta presupuesto de muestra",
+    "analysis_plan": "Comparar efectos principales e interacción, con bloqueos por complejidad y turno cuando corresponda.",
+    "preregistration": null
+  },
+  "governance": {
+    "risk": "medio",
+    "personal_data": false,
+    "authorized": false,
+    "budget_limit": 0,
+    "budget_currency": "MXN",
+    "stop_conditions": [
+      "No cambiar la operación real sin autorización",
+      "Detener prueba si aumenta la tasa de errores sobre el umbral que debe definirse"
+    ],
+    "human_reviewer_role": "Gerencia",
+    "privacy_note": "Usar identificadores sintéticos de ticket.",
+    "restricted_topic": false
+  },
+  "extensions": {
+    "operations": {
+      "service_level": "sin definir",
+      "capacity": "sin definir"
+    }
+  },
+  "unknowns": [
+    "Sistema de medición",
+    "Basales",
+    "Umbral de errores",
+    "Aprobación operativa"
+  ]
+}
