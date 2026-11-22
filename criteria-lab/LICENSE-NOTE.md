@@ -1,0 +1,1 @@
+CRITERIA Lab es una implementación independiente inspirada en la idea de simulación multiagente. NO contiene código copiado de MiroFish. Los resultados de agentes son sintéticos y no constituyen evidencia de mercado.
