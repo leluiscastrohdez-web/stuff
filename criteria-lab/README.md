@@ -7,7 +7,7 @@
 - **GitHub:** control de versiones de `appscript/Code.gs` y `appscript/Index.html`. Nunca almacenar claves de API ni hojas privadas en el repositorio.
 - **Google Sheets / Drive:** base con cinco pestañas (`Guía`, `Agentes`, `Escenarios`, `Corridas`, `Respuestas`), creada en la cuenta empresarial. Los dos últimos son registros de ejecuciones; los demás son referencias legibles.
 - **Google Apps Script:** aloja una aplicación web **privada**. Sirve la interfaz y conecta el motor con la hoja, sin CORS ni servidor de pago.
-- **Gemini API (opcional):** `gemini-2.5-flash-lite` con acceso gratuito sujeto a cuota. La clave se guarda en Propiedades de secuencia de comandos (no en el navegador ni en Github).
+- **Gemini API (opcional):** `gemini-3.5-flash-lite` con acceso gratuito sujeto a cuota. La clave se guarda en Propiedades de secuencia de comandos (no en el navegador ni en Github).
 - **Modo demostración:** motor determinista, sin API, disponible tanto en la interfaz local como dentro de Apps Script. Sus respuestas dependen de reglas programadas.
 
 ## Abrir ahora (sin configurar nada)
@@ -28,7 +28,7 @@ Descarga `CRITERIA_Lab_demo_offline.html` y ábrelo en un navegador de escritori
 
 ## Activar Gemini sin pagar
 
-1. En [Google AI Studio](https://aistudio.google.com/apikey) crea una clave asociada a un proyecto **sin vincular facturación** y comprueba que el modelo `gemini-2.5-flash-lite` tenga cuota gratuita en tu región/proyecto.
+1. En [Google AI Studio](https://aistudio.google.com/apikey) crea una clave asociada a un proyecto **sin vincular facturación** y comprueba que el modelo `gemini-3.5-flash-lite` tenga cuota gratuita en tu región/proyecto.
 2. En Apps Script, **Configuración del proyecto → Propiedades de secuencia de comandos → Agregar propiedad**: nombre `GEMINI_API_KEY`, valor de tu clave. Guarda.
 3. Vuelve a desplegar una **nueva versión** de la aplicación si modificaste código. Selecciona `Motor: Gemini` y comienza con 4 agentes y 1 ronda.
 4. Si Gemini responde 429/403, **no** pases a una modalidad de pago: comprueba cuotas/modelo y usa el modo Reglas.
@@ -63,3 +63,9 @@ Fuentes técnicas:
 - https://developers.google.com/apps-script/guides/services/quotas
 - https://ai.google.dev/gemini-api/docs/pricing
 - https://developers.google.com/apps-script/guides/properties
+
+## Corrección de HTTP 404 en proyectos nuevos (noviembre de 2026)
+
+El prototipo v0.2 original configuraba `gemini-2.5-flash-lite`, pero Google restringió la generación con modelos Gemini 2.5 a proyectos con uso histórico. En la versión v0.2.1 se cambió a `gemini-3.5-flash-lite`. Si ya copiaste Code.gs a Apps Script, cambia solo el ID del modelo, guarda y **Implementar → Administrar implementaciones → Editar → Versión: Nueva versión → Implementar**. Las implementaciones previas no recogen cambios hasta seleccionar una nueva versión. La clave API existente no necesita regenerarse.
+
+Si hay error, el código nuevo muestra el mensaje técnico de Google, sin registrar la clave.
