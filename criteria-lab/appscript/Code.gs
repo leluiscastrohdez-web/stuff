@@ -1,4 +1,4 @@
-/** CRITERIA Lab v0.2 — Google Apps Script bound to the private CRITERIA Lab workbook.
+/** CRITERIA Lab v0.3 — Google Apps Script bound to the private CRITERIA Lab workbook.
  * Never store API keys in code or client HTML. No external database/hosting needed.
  * See README for deploying as a private web app (Only myself).
  */
