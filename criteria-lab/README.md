@@ -38,8 +38,8 @@ Descarga `CRITERIA_Lab_demo_offline.html` y ábrelo en un navegador de escritori
 ## Experimentos incluidos
 
 - **Marca:** `Dale rumbo a tu negocio` versus `Antes de cambiar tu empresa, descubre qué vale la pena cambiar`.
-- **S00:** conversación gratuita versus exploración remunerada; $2,250 MXN antes de IVA es solo hipótesis interna para microempresa.
-- **S03:** charla genérica versus taller aplicado de IA; $16,000 MXN por grupo es solo hipótesis comercial.
+- **S00:** conversación gratuita versus exploración remunerada; honorarios de S00 se definen en propuesta privada.
+- **S03:** charla genérica versus taller aplicado de IA; los honorarios del taller se determinan según alcance.
 - **Metodología:** diagnóstico integral automático versus alcance mínimo profesionalmente suficiente.
 
 **Límite metodológico:** no simula el mercado de manera predictiva; la cifra de agentes que 'consideraría conversar' no es tasa de conversión. Los puntajes del modo Reglas reflejan sesgos explícitos en código; el modo Gemini refleja sesgos del modelo y de los prompts. Para validar, contrastar con entrevistas y solicitudes reales, dejando rastros de versión y supuestos.
