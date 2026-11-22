@@ -1,0 +1,569 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/leluiscastrohdez-web/stuff/blob/main/criteria-lab/standard/cev-01.schema.json",
+  "title": "CEV-01 — Ficha universal de evaluación, CRITERIA Lab",
+  "description": "Estándar de captura; valida estructura, NO eficacia, verdad ni causalidad.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "standard_version",
+    "case_id",
+    "name",
+    "domain",
+    "object",
+    "decision",
+    "target",
+    "hypotheses",
+    "factors",
+    "metrics",
+    "sources",
+    "design",
+    "governance"
+  ],
+  "properties": {
+    "standard_version": {
+      "const": "1.0"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^CEV-[A-Za-z0-9-]{3,48}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 180
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Dominio abierto: comercio, salud no clínica, operaciones, política, producto, logística, educación, etc."
+    },
+    "object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "description",
+        "maturity"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 3000
+        },
+        "maturity": {
+          "enum": [
+            "idea",
+            "prototipo",
+            "piloto",
+            "operacion",
+            "desconocido"
+          ]
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "question",
+        "options",
+        "owner_role"
+      ],
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "owner_role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 150
+        },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 350
+          }
+        },
+        "deadline": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "error_cost": {
+          "type": "string",
+          "maxLength": 1000
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit",
+        "population",
+        "context"
+      ],
+      "properties": {
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "population": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1500
+        },
+        "geography": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "time_window": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        }
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "claim",
+          "falsification"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "claim": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1400
+          },
+          "falsification": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1400
+          },
+          "direction": {
+            "enum": [
+              "mayor",
+              "menor",
+              "diferente",
+              "descriptivo",
+              "incierto"
+            ]
+          }
+        }
+      }
+    },
+    "factors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "levels",
+          "controllable"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "levels": {
+            "type": "array",
+            "maxItems": 30,
+            "items": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "controllable": {
+            "type": "boolean"
+          },
+          "unit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "safe_range": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "measurement",
+          "unit",
+          "source_id",
+          "direction"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "measurement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "source_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "direction": {
+            "enum": [
+              "subir",
+              "bajar",
+              "mantener",
+              "descriptivo"
+            ]
+          },
+          "baseline": {
+            "type": [
+              "number",
+              "string",
+              "null"
+            ]
+          },
+          "threshold": {
+            "type": [
+              "number",
+              "string",
+              "null"
+            ]
+          },
+          "minimum_relevant_effect": {
+            "type": [
+              "number",
+              "string",
+              "null"
+            ]
+          },
+          "measurement_quality": {
+            "enum": [
+              "no_evaluada",
+              "baja",
+              "media",
+              "alta"
+            ]
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "origin",
+          "status",
+          "quality",
+          "usage_rights"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "kind": {
+            "enum": [
+              "documento",
+              "base_de_datos",
+              "entrevista",
+              "medicion",
+              "estadistica",
+              "simulacion",
+              "normativa",
+              "otro"
+            ]
+          },
+          "origin": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 700
+          },
+          "status": {
+            "enum": [
+              "disponible",
+              "por_obtener",
+              "no_verificada"
+            ]
+          },
+          "quality": {
+            "enum": [
+              "no_evaluada",
+              "baja",
+              "media",
+              "alta"
+            ]
+          },
+          "usage_rights": {
+            "enum": [
+              "permitido",
+              "por_confirmar",
+              "restringido"
+            ]
+          },
+          "period": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "location": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "limitations": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "synthetic": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "design": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goal",
+        "method",
+        "assignment",
+        "replicates",
+        "sample_size_planned"
+      ],
+      "properties": {
+        "goal": {
+          "enum": [
+            "explorar",
+            "comparar",
+            "estimar_efecto",
+            "verificar_requisito",
+            "predecir",
+            "describir"
+          ]
+        },
+        "method": {
+          "enum": [
+            "por_definir",
+            "simulacion",
+            "doe_factorial",
+            "ab_aleatorizado",
+            "cuasiexperimental",
+            "observacional",
+            "benchmark",
+            "prueba_tecnica",
+            "otro"
+          ]
+        },
+        "assignment": {
+          "enum": [
+            "no_aplica",
+            "aleatorizada",
+            "bloqueada",
+            "pareada",
+            "conveniencia",
+            "por_definir"
+          ]
+        },
+        "replicates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sample_size_planned": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "confounders": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 350
+          }
+        },
+        "sampling_note": {
+          "type": "string",
+          "maxLength": 1200
+        },
+        "analysis_plan": {
+          "type": "string",
+          "maxLength": 1800
+        },
+        "preregistration": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "risk",
+        "personal_data",
+        "authorized",
+        "budget_limit",
+        "stop_conditions"
+      ],
+      "properties": {
+        "risk": {
+          "enum": [
+            "bajo",
+            "medio",
+            "alto",
+            "por_evaluar"
+          ]
+        },
+        "personal_data": {
+          "type": "boolean"
+        },
+        "authorized": {
+          "type": "boolean"
+        },
+        "budget_limit": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "budget_currency": {
+          "type": "string",
+          "maxLength": 8
+        },
+        "stop_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "human_reviewer_role": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "privacy_note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "restricted_topic": {
+          "type": "boolean"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Módulos de dominio; no sustituyen campos universales."
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 450
+      }
+    }
+  }
+}
